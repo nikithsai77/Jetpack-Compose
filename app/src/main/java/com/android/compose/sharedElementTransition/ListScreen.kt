@@ -39,6 +39,8 @@ fun SharedTransitionScope.ListScreen(onItemClick: (resId: Int, title: String) ->
                 .clickable {
                     onItemClick(resId, text)
                 }) {
+                //sharedElement is used to make the transition between the matching composable of key (state).
+                //state is the unique key to make transition.
                 Image(painter = painterResource(resId), contentDescription = null, modifier = Modifier.aspectRatio(ratio = 16 / 9f).weight(1f)
                     .sharedElement(state = rememberSharedContentState(key = "image/$resId"),
                         animatedVisibilityScope = animatedVisibilityScope,
