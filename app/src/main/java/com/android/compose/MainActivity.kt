@@ -20,7 +20,6 @@ class MainActivity : ComponentActivity() {
     @ExperimentalSharedTransitionApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
             ComposeTheme {
                 val controller = rememberNavController()
