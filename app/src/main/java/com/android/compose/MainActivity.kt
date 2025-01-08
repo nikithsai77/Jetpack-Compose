@@ -5,44 +5,81 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.android.compose.sharedElementTransition.DetailScreen
-import com.android.compose.sharedElementTransition.ListScreen
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.android.compose.ui.theme.ComposeTheme
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class MainActivity : ComponentActivity() {
 
     @ExperimentalSharedTransitionApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             ComposeTheme {
-                val controller = rememberNavController()
-                SharedTransitionLayout {
-                    NavHost(navController = controller, startDestination = "list") {
-                        composable(route = "list") {
-                            ListScreen(animatedVisibilityScope = this, onItemClick =  { resId, title ->
-                                controller.navigate(route = "Detail/$resId/$title")
-                            })
+                val cryptoManager = CryptoManager()
+                var messageToEncrypt by remember {
+                    mutableStateOf("")
+                }
+                var messageToDecrypt by remember {
+                    mutableStateOf("")
+                }
+                Column(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(32.dp)) {
+                    TextField(value = messageToEncrypt,
+                        onValueChange = {
+                            messageToEncrypt = it
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { Text(text = "Enter The Data") })
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row {
+                        Button(onClick = {
+                            val bytes = messageToEncrypt.encodeToByteArray()
+                            val file = File(filesDir, "secret.txt")
+                            if (!file.exists()) file.createNewFile()
+                            val fos = FileOutputStream(file)
+                            messageToDecrypt = cryptoManager.encrypt(
+                                bytes = bytes,
+                                outputStream = fos
+                            ).decodeToString()
+                        }) {
+                            Text(text = "Encrypt")
                         }
-                        composable(route = "Detail/{resId}/{text}", arguments = listOf(
-                            navArgument(name = "resId") {
-                                type = NavType.IntType
-                            },
-                            navArgument(name = "text") {
-                                type = NavType.StringType
-                            }
-                        )) {
-                            val resId = it.arguments?.getInt("resId") ?: 0
-                            val title = it.arguments?.getString("text") ?: ""
-                            DetailScreen(resId = resId, title = title, animatedVisibilityScope = this)
+
+                        Spacer(modifier = Modifier.width(10.dp))
+
+                        Button(onClick = {
+                            val file = File(filesDir, "secret.txt")
+                            messageToEncrypt = cryptoManager.decrypt(
+                                inputStream = FileInputStream(file)
+                            ).decodeToString()
+                        }) {
+                            Text(text = "Decrypt")
                         }
                     }
+                    Text(text = messageToDecrypt)
                 }
             }
         }
