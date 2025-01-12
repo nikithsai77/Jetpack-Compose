@@ -1,4 +1,4 @@
-package com.android.compose.typeSafeNavigation.no_routes.ok
+package com.android.compose.typeSafeNavigation.no_routes.nonSubGraph
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
