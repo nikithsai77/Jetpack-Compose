@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlinx.serialization)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -54,6 +56,9 @@ dependencies {
     implementation(libs.androidx.compose.animation)
     //Navigation Compose
     implementation(libs.androidx.navigation.compose)
+
+    //No Need To Use Route's.
+    implementation(libs.kotlinx.serialization.json)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

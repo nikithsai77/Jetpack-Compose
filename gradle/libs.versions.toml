@@ -10,6 +10,7 @@ activityCompose = "1.9.3"
 composeBom = "2024.12.01"
 composeAnimation = "1.7.6"
 navigationCompose = "2.8.5"
+kotlinxSerializationJson = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,8 +33,13 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 #Compose Animation
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "composeAnimation" }
 
+#TypeSafe Navigation without Route's
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
+#TypeSafe Navigation without Route's - Plugin
+kotlinx-serialization={id="org.jetbrains.kotlin.plugin.serialization",version="2.1.0" }
