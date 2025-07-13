@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.android.compose">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -16,7 +20,7 @@
         android:theme="@style/Theme.Compose"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".service.boundService.aidl.AIDLActivity"
             android:exported="true"
             android:theme="@style/Theme.Compose">
             <intent-filter>
@@ -25,9 +29,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.boundService.TranslatorBoundService"
+
+        <service android:name=".service.boundService.localBinding.RandomNumberService" />
+
+        <service android:name=".service.boundService.localBinding.TranslatorBoundService"
             android:enabled="true"
             android:exported="false" />
+
+        <service android:name=".service.boundService.remoteBinding.RemoteBindingService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":remote" />
+
+        <service android:name=".service.boundService.both.BoundService" android:exported="false" />
+
+        <service android:name=".normalService.MyJobIntentService" android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service android:name=".jobScheduler.MyJobService" android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
+            android:name=".foreground.MyForegroundService"
+            android:foregroundServiceType="dataSync"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service android:name=".service.boundService.aidl.AIDLService"
+                 android:exported="true"
+                 android:enabled="true" />
+
     </application>
 
 </manifest>

@@ -1,18 +1,24 @@
-package com.android.compose.service.boundService
+package com.android.compose.service.boundService.localBinding
 
 import android.os.Binder
 import android.os.IBinder
 import android.app.Service
+import android.widget.Toast
 import android.content.Intent
 import com.google.mlkit.nl.translate.Translation
-import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.TranslatorOptions
+import com.google.mlkit.nl.translate.TranslateLanguage
 
 class TranslatorBoundService : Service() {
     var binder : CustomIBinder? = CustomIBinder()
 
     inner class CustomIBinder : Binder() {
         fun getService() : TranslatorBoundService { return this@TranslatorBoundService }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Toast.makeText(this, "Local Bound Service Started....", Toast.LENGTH_SHORT).show()
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onBind(intent: Intent?): IBinder? {

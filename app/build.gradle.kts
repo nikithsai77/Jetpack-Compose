@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -35,6 +36,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        aidl = true
         compose = true
     }
 }

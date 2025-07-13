@@ -44,8 +44,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.android.compose.service.boundService.TranslatorBoundService
-import com.android.compose.service.boundService.TranslatorBoundService.CustomIBinder
+import com.android.compose.service.boundService.localBinding.TranslatorBoundService
+import com.android.compose.service.boundService.localBinding.TranslatorBoundService.CustomIBinder
 
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                     if (listen) {
                         listen(
                             onStart = {
-                                userEnteredText = "start listening"
+                                userEnteredText = "Start Listening"
                             }, onResult = {
                                 userEnteredText = it
                                 boundService?.translate(text = userEnteredText, onResult = { resultText ->
@@ -125,15 +125,17 @@ class MainActivity : ComponentActivity() {
                         Spacer(modifier = Modifier.height(height = 10.dp))
 
                         androidx.compose.material3.Button(onClick = {
-                            boundService?.translate(
-                                text = userEnteredText,
-                                onResult = {
-                                    userEnteredText = it
-                                },
-                                onFailure = {
-                                    Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
-                                }
-                            )
+                            if (isBound) {
+                                boundService?.translate(
+                                    text = userEnteredText,
+                                    onResult = {
+                                        userEnteredText = it
+                                    },
+                                    onFailure = {
+                                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT).show()
+                                    }
+                                )
+                            } else Toast.makeText(this@MainActivity, "Not Bounded", Toast.LENGTH_SHORT).show()
                         }) {
                             Text(text = "Translate")
                         }
