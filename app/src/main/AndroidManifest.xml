@@ -11,6 +11,11 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
+<!--    location tracking-->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,7 +28,7 @@
         android:theme="@style/Theme.Compose"
         tools:targetApi="31">
         <activity
-            android:name=".musicPlayer.MusicActivity"
+            android:name=".locationTracking.ForeGroundLocationActivity"
             android:exported="true"
             android:theme="@style/Theme.Compose">
             <intent-filter>
@@ -62,7 +67,13 @@
 
         <service android:name=".musicPlayer.MusicPlayerService"
                  android:exported="false"
-                 android:enabled="true" />
+                 android:enabled="true"
+                 android:foregroundServiceType="mediaPlayback"/>
+
+        <service android:name=".locationTracking.LocationService"
+                 android:exported="false"
+                 android:enabled="true"
+                 android:foregroundServiceType="location" />
 
     </application>
 

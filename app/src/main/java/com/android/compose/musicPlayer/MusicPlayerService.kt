@@ -1,8 +1,8 @@
 package com.android.compose.musicPlayer
 
 import android.Manifest
-import android.app.IntentService
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -12,14 +12,14 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
+import com.android.compose.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import androidx.core.net.toUri
-import com.android.compose.R
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
@@ -27,7 +27,7 @@ const val PREV = "Prev"
 const val NEXT = "Next"
 const val PLAY_PAUSE = "PlayPause"
 
-class MusicPlayerService : IntentService("music player service") {
+class MusicPlayerService : Service() {
 
     private var job: Job? = null
     private var musicList = mutableListOf<Track>()
@@ -50,26 +50,27 @@ class MusicPlayerService : IntentService("music player service") {
         return localBinder
     }
 
-    override fun onHandleIntent(intent: Intent?) {
-       intent?.let {
-           when(it.action) {
-               PREV -> {
-                   previous()
-               }
-               NEXT -> {
-                   next()
-               }
-               PLAY_PAUSE -> {
-                   playPause()
-               }
-               else -> {
-                   currentTrack.update {  track ->
-                       track.copy(track = songs[0])
-                   }
-                   play(track = currentTrack.value.track)
-               }
-           }
-       }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        intent?.let {
+            when(it.action) {
+                PREV -> {
+                    previous()
+                }
+                NEXT -> {
+                    next()
+                }
+                PLAY_PAUSE -> {
+                    playPause()
+                }
+                else -> {
+                    currentTrack.update {  track ->
+                        track.copy(track = songs[0])
+                    }
+                    play(track = currentTrack.value.track)
+                }
+            }
+        }
+        return START_REDELIVER_INTENT
     }
 
     fun previous() {
@@ -152,7 +153,7 @@ class MusicPlayerService : IntentService("music player service") {
             .addAction(R.drawable.ic_prev, "Previous", createAction(id = 0, str = PREV))
             .addAction(
                 if (mediaPlayer.isPlaying) R.drawable.ic_pause else R.drawable.ic_play,
-                "Play Pause",
+                if (mediaPlayer.isPlaying) "Pause" else "Play",
                 createAction(id = 1, str = PLAY_PAUSE)
             )
             .addAction(R.drawable.ic_next, "Next", createAction(id = 2, str = NEXT))
@@ -190,6 +191,7 @@ class MusicPlayerService : IntentService("music player service") {
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.stop()
+        mediaPlayer.reset()
     }
 
 }
