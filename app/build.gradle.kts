@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.translate)
     testImplementation(libs.junit)
-    implementation(libs.androidx.biometric)
+    implementation(libs.coil.compose)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -1,40 +1,77 @@
 package com.android.compose
 
+import android.net.Uri
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.ui.Modifier
+import androidx.compose.material3.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.ui.layout.ContentScale
+import coil.compose.AsyncImage
 import com.android.compose.ui.theme.ComposeTheme
 
-class MainActivity : AppCompatActivity() {
-    private val promptManager by lazy {
-        BiometricManager(context = this)
-    }
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    val biometricResult by promptManager.promptResult.collectAsState(initial = null)
-                    Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                        Button(onClick = {
-                            promptManager.showBiometric(title = "Finger Scanner", description = "Scan Here")
-                        }) {
-                            Text(text = "Authentication")
+                    val selectedImageUri = remember {
+                        mutableStateListOf<Uri>()
+                    }
+                    val singlePhotoPicker = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.PickVisualMedia(),
+                        onResult = {
+                            selectedImageUri.clear()
+                            selectedImageUri.add(it!!)
                         }
-                        biometricResult?.let {
-                            Text(text = it.getText())
+                    )
+                    val multiplePhotoPicker = rememberLauncherForActivityResult(
+                        contract = ActivityResultContracts.PickMultipleVisualMedia(),
+                        onResult = {
+                            selectedImageUri.clear()
+                            selectedImageUri.addAll(elements = it)
+                        }
+                    )
+
+                    Column {
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+                            Button(onClick = {
+                                singlePhotoPicker.launch(input = PickVisualMediaRequest(
+                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                                ))
+                            }) {
+                                Text(text = "Pick Single Photo")
+                            }
+
+                            Button(onClick = {
+                                multiplePhotoPicker.launch(input = PickVisualMediaRequest(
+                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                                ))
+                            }) {
+                                Text(text = "Pick Multiple Photo's")
+                            }
+                        }
+
+                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                            items(items = selectedImageUri) {
+                                AsyncImage(
+                                    model = it,
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop
+                                )
+                                HorizontalDivider()
+                            }
                         }
                     }
                 }
