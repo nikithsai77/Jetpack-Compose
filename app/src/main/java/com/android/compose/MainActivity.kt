@@ -7,16 +7,15 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.Modifier
-import androidx.compose.material3.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import androidx.compose.ui.layout.ContentScale
 import com.android.compose.ui.theme.ComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -63,14 +62,14 @@ class MainActivity : ComponentActivity() {
                             }
                         }
 
-                        LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        LazyVerticalGrid(columns = GridCells.Fixed(count = 2), modifier = Modifier.fillMaxSize()) {
                             items(items = selectedImageUri) {
                                 AsyncImage(
                                     model = it,
                                     contentDescription = null,
-                                    contentScale = ContentScale.Crop
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.padding(all = 2.dp),
                                 )
-                                HorizontalDivider()
                             }
                         }
                     }
