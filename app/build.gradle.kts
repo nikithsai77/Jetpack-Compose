@@ -53,21 +53,21 @@ dependencies {
     testImplementation(libs.junit)
 
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.57")
-    kapt("com.google.dagger:hilt-android-compiler:2.57")
-    kapt("androidx.hilt:hilt-compiler:1.2.0")
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.kapt)
+    kapt(libs.hilt.compiler)
 
     // Compose dependencies
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt.compose.navigation)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation("androidx.compose.ui:ui:1.8.3")
 
     androidTestImplementation(libs.androidx.junit)

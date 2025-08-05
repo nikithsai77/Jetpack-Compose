@@ -12,6 +12,10 @@ composeBom = "2024.12.01"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+dagger-hilt = { module = "com.google.dagger:hilt-android", version = "2.57" }
+dagger-kapt = { module = 'com.google.dagger:hilt-android-compiler', version = "2.57" }
+hilt-compiler = {module = 'androidx.hilt:hilt-compiler', version = "1.2.0"}
+hilt-compose-navigation = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
