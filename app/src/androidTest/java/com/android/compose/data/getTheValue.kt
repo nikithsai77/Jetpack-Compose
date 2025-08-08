@@ -3,15 +3,15 @@ package com.android.compose.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 
-fun <T> LiveData<T>.getValue(action : () -> Unit) : T? {
+suspend fun <T> LiveData<T>.getTheValue(action: suspend () -> Unit) : T? {
     var data: T? = null
-    val observe = object : Observer<T> {
+    val observer = object : Observer<T> {
         override fun onChanged(value: T) {
             data = value
         }
     }
-    this.observeForever(observe)
-    Thread.sleep(2000)
-    this.removeObserver(observe)
+    this.observeForever(observer)
+    action()
+    this.removeObserver(observer)
     return data
 }
