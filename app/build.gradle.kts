@@ -50,10 +50,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
 
     // Dagger - Hilt
     implementation(libs.dagger.hilt)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.room.ktx)
     kapt(libs.dagger.kapt)
     kapt(libs.hilt.compiler)
 
@@ -70,7 +71,27 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation("androidx.compose.ui:ui:1.8.3")
 
+    // Material Design
+    implementation("com.google.android.material:material:1.3.0-alpha02")
+
+    // Architectural Components
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime:2.2.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
+
+    //Junit Testing
+    testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+
+    //truth makes assertion more readable
+    testImplementation("com.google.truth:truth:1.4.4")
+    androidTestImplementation("com.google.truth:truth:1.4.4")
+
+    //Espresso
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
