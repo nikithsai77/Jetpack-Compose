@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Testing</string>
+    <string name="search_for_images">Search for Images...</string>
+    <string name="name">Name</string>
+    <string name="price_per_item">Price per Item</string>
+    <string name="_3x">3x</string>
+    <string name="price_3">Price: 3€</string>
 </resources>

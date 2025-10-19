@@ -1,4 +1,4 @@
-package com.android.compose.local
+package com.android.compose.data.remote.local.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.android.compose.data.local.ShoppingItem
 
 @Dao
 interface ShoppingDao {

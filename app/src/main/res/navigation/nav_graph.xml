@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/ShoppingFragment"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/ShoppingFragment"
+        android:name="com.android.compose.ui.ShoppingFragment"
+        tools:layout="@layout/fragment_shopping"
+        android:label="ShoppingFragment">
+        <action
+            android:id="@+id/action_shoppingFragment_to_addShoppingItemFragment"
+            app:destination="@id/AddShoppingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AddShoppingFragment"
+        android:name="com.android.compose.ui.AddShoppingItemFragment"
+        tools:layout="@layout/fragment_add_shopping_item"
+        android:label="AddShoppingItemFragment">
+        <action
+            android:id="@+id/action_addShoppingItemFragment_to_imagePickFragment"
+            app:destination="@id/ImagePickFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ImagePickFragment"
+        android:name="com.android.compose.ui.ImagePickFragment"
+        tools:layout="@layout/fragment_image_pick"
+        android:label="ImagePickFragment" />
+
+
+</navigation>

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.dagger.hilt)
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -17,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.android.compose.HiltTestRunner"
     }
 
     buildTypes {
@@ -55,8 +56,14 @@ dependencies {
     implementation(libs.dagger.hilt)
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.androidx.fragment.testing)
+    implementation(libs.androidx.navigation.testing)
     kapt(libs.dagger.kapt)
     kapt(libs.hilt.compiler)
+
+    // For XML Fragments and Nav Graph
+    implementation("androidx.navigation:navigation-fragment-ktx:2.9.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.9.5")
 
     // Compose dependencies
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
@@ -110,20 +117,33 @@ dependencies {
     testImplementation("org.hamcrest:hamcrest-all:1.3")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.robolectric:robolectric:4.15.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     testImplementation("com.google.truth:truth:1.4.4")
-    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation("org.mockito:mockito-core:2.21.0")
+    //Test dispatcher in coroutine test.
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+
+    androidTestImplementation("org.mockito:mockito-core:2.21.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:5.0.5")
+    kapt("com.github.bumptech.glide:compiler:5.0.5")
 
     // Instrumented Unit Tests
-//    androidTestImplementation("com.linkedin.dexmaker:dexmaker-mockito:2.12.1")
     androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     //InstantTaskExecutorRule
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation("androidx.test:core:1.7.0")
     androidTestImplementation("com.google.truth:truth:1.4.4")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    androidTestImplementation("org.mockito:mockito-core:2.21.0")
+
+    // For Android instrumented tests
+    androidTestImplementation("org.mockito:mockito-android:5.20.0")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+
+    //Hilt
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.57")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.57")
 
     //Espresso
     androidTestImplementation(libs.androidx.espresso.core)
@@ -131,4 +151,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Click's on RecyclerView in Test Case's.
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.7.0")
 }
