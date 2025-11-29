@@ -4,44 +4,99 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.android.compose.sharedElementTransition.DetailScreen
-import com.android.compose.sharedElementTransition.ListScreen
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.android.compose.ui.theme.ComposeTheme
 
 class MainActivity : ComponentActivity() {
 
-    @ExperimentalSharedTransitionApi
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ComposeTheme {
-                val controller = rememberNavController()
-                SharedTransitionLayout {
-                    NavHost(navController = controller, startDestination = "list") {
-                        composable(route = "list") {
-                            ListScreen(animatedVisibilityScope = this, onItemClick =  { resId, title ->
-                                controller.navigate(route = "Detail/$resId/$title")
-                            })
-                        }
-                        composable(route = "Detail/{resId}/{text}", arguments = listOf(
-                            navArgument(name = "resId") {
-                                type = NavType.IntType
-                            },
-                            navArgument(name = "text") {
-                                type = NavType.StringType
+                Scaffold(
+                    modifier = Modifier.fillMaxWidth(),
+                    topBar = {
+                        TopAppBar(
+                            title = {
+                                Text(
+                                    text = stringResource(id = R.string.app_name),
+                                )
                             }
-                        )) {
-                            val resId = it.arguments?.getInt("resId") ?: 0
-                            val title = it.arguments?.getString("text") ?: ""
-                            DetailScreen(resId = resId, title = title, animatedVisibilityScope = this)
+                        )
+                    }
+                ) { paddingValues ->
+                    val windowInfo = rememberWindowInfo()
+                    if (windowInfo.screenWidthInfo is WindowInfo.WindowType.COMPACT) {
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(paddingValues = paddingValues)
+                        ) {
+                            items(count = 10) {
+                                Text(
+                                    text = "Item: $it",
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.Cyan)
+                                        .padding(all = 16.dp)
+                                )
+                            }
+
+                            items(count = 10) {
+                                Text(
+                                    text = "Item $it",
+                                    fontSize = 20.sp,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.Yellow)
+                                        .padding(all = 16.dp)
+                                )
+                            }
+                        }
+                    } else {
+                        Row(modifier = Modifier.fillMaxSize()) {
+                            LazyColumn(modifier = Modifier.weight(weight = 1f)) {
+                                items(count = 10) {
+                                    Text(
+                                        text = "Item: $it",
+                                        fontSize = 20.sp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color.Cyan)
+                                            .padding(all = 16.dp)
+                                    )
+                                }
+                            }
+
+                            LazyColumn(modifier = Modifier.weight(weight = 1f)) {
+                                items(count = 10) {
+                                    Text(
+                                        text = "Item: $it",
+                                        fontSize = 20.sp,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Color.Yellow)
+                                            .padding(all = 16.dp)
+                                    )
+                                }
+                            }
                         }
                     }
                 }
