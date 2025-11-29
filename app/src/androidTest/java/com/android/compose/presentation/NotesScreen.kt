@@ -42,7 +42,7 @@ class NotesScreenTest {
     @ExperimentalAnimationApi
     @Before
     fun setUp() {
-        //is used to tell the hilt to inject the dependencies on this test class.
+        //is used to tell the hilt to inject the dependencies on this test class as well on provided activity instance.
         hiltRule.inject()
         //activityRule is the rule to launch the specified activity.
         //scenario is the Activity scenario instance is used to control the currently running activity instance.
