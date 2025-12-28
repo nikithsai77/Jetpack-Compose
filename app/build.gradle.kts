@@ -118,11 +118,14 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.robolectric:robolectric:4.15.1")
     testImplementation("com.google.truth:truth:1.4.4")
-    testImplementation("org.mockito:mockito-core:2.21.0")
+    testImplementation("org.mockito:mockito-core:5.21.0")
     //Test dispatcher in coroutine test.
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    // Mockito for Android Test
+    androidTestImplementation("org.mockito:mockito-core:5.21.0")
 
-    androidTestImplementation("org.mockito:mockito-core:2.21.0")
+    // Mockk
+    testImplementation("io.mockk:mockk:1.14.7")
 
     // Glide
     implementation("com.github.bumptech.glide:glide:5.0.5")
