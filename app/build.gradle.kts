@@ -50,11 +50,6 @@ dependencies {
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
 
-    //Compose Animation
-    implementation(libs.androidx.compose.animation)
-    //Navigation Compose
-    implementation(libs.androidx.navigation.compose)
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

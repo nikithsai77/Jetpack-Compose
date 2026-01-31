@@ -4,45 +4,35 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.android.compose.sharedElementTransition.DetailScreen
-import com.android.compose.sharedElementTransition.ListScreen
-import com.android.compose.ui.theme.ComposeTheme
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.android.compose.ui.theme.CustomLayoutTheme
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
 
-    @ExperimentalSharedTransitionApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            ComposeTheme {
-                val controller = rememberNavController()
-                SharedTransitionLayout {
-                    NavHost(navController = controller, startDestination = "list") {
-                        composable(route = "list") {
-                            ListScreen(animatedVisibilityScope = this, onItemClick =  { resId, title ->
-                                controller.navigate(route = "Detail/$resId/$title")
-                            })
-                        }
-                        composable(route = "Detail/{resId}/{text}", arguments = listOf(
-                            navArgument(name = "resId") {
-                                type = NavType.IntType
-                            },
-                            navArgument(name = "text") {
-                                type = NavType.StringType
-                            }
-                        )) {
-                            val resId = it.arguments?.getInt("resId") ?: 0
-                            val title = it.arguments?.getString("text") ?: ""
-                            DetailScreen(resId = resId, title = title, animatedVisibilityScope = this)
-                        }
+            CustomLayoutTheme {
+                CustomFlowRow {
+                    repeat(times = 10) {
+                        Box(
+                            modifier = Modifier
+                                .width(width = Random.nextInt(from = 50, until = 200).dp)
+                                .height(height = 100.dp)
+                                .background(
+                                    Color(
+                                        color = Random.nextLong(until = 0xFF000000)
+                                    )
+                                )
+                        )
                     }
                 }
             }
