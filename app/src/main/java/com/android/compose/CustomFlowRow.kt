@@ -10,6 +10,7 @@ fun CustomFlowRow(modifier: Modifier = Modifier, content: @Composable () -> Unit
     Layout(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
+
             val placeable = measurables.map {
                 it.measure(constraints)
             }
@@ -44,6 +45,7 @@ fun CustomFlowRow(modifier: Modifier = Modifier, content: @Composable () -> Unit
                     }
                     yPosition += row.maxOfOrNull { it.height } ?: 0
                 }
+
             }
         },
         content = content
